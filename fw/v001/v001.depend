@@ -1,0 +1,130 @@
+# depslib dependency file v1.0
+1418582847 source:/mnt/data/Prog/MK/Р РµРіСѓР»СЏС‚РѕСЂ С„РµРЅР°/fw/v001/main.c
+	"main.h"
+
+1418578095 /mnt/data/Prog/MK/Р РµРіСѓР»СЏС‚РѕСЂ С„РµРЅР°/fw/v001/main.h
+	<avr/io.h>
+	<avr/interrupt.h>
+	<avr/pgmspace.h>
+	<avr/sleep.h>
+	<avr/eeprom.h>
+	<util/delay.h>
+	<inttypes.h>
+	"defines.h"
+	"messages.h"
+	"1202_lib.h"
+	"my-stdlib.h"
+
+1385464816 /mnt/data/Prog/MK/Р РµРіСѓР»СЏС‚РѕСЂ С„РµРЅР°/fw/v001/includes.h
+
+1401378445 source:/mnt/data/Prog/MK/Р РµРіСѓР»СЏС‚РѕСЂ С„РµРЅР°/fw/v001/asm.S
+	<avr/io.h>
+	"defines.h"
+
+1418590332 /mnt/data/Prog/MK/Р РµРіСѓР»СЏС‚РѕСЂ С„РµРЅР°/fw/v001/defines.h
+
+1418591075 /mnt/data/Prog/MK/Р РµРіСѓР»СЏС‚РѕСЂ С„РµРЅР°/fw/v001/messages.h
+	"main.h"
+
+1418583321 source:/mnt/data/Prog/MK/Р РµРіСѓР»СЏС‚РѕСЂ С„РµРЅР°/fw/v001/1202_lib.c
+	"main.h"
+
+1418583327 /mnt/data/Prog/MK/Р РµРіСѓР»СЏС‚РѕСЂ С„РµРЅР°/fw/v001/1202_lib.h
+
+1418499773 /mnt/data/Prog/MK/Р РµРіСѓР»СЏС‚РѕСЂ С„РµРЅР°/fw/v001/my-stdlib.h
+
+1418500058 source:/mnt/data/Prog/MK/Р РµРіСѓР»СЏС‚РѕСЂ С„РµРЅР°/fw/v001/messages.c
+	"main.h"
+
+1418500053 source:/mnt/data/Prog/MK/Р РµРіСѓР»СЏС‚РѕСЂ С„РµРЅР°/fw/v001/my-stdlib.c
+	"main.h"
+
+1418583321 source:\\inori\data\prog\Схемы\Регулятор фена\fw\v001\1202_lib.c
+	"main.h"
+
+1492079937 \\inori\data\prog\Схемы\Регулятор фена\fw\v001\main.h
+	<avr/io.h>
+	<avr/interrupt.h>
+	<avr/pgmspace.h>
+	<avr/sleep.h>
+	<avr/eeprom.h>
+	<util/delay.h>
+	<inttypes.h>
+	"defines.h"
+	"messages.h"
+	"1202_lib.h"
+	"my-stdlib.h"
+
+1418590332 \\inori\data\prog\Схемы\Регулятор фена\fw\v001\defines.h
+
+1492087782 \\inori\data\prog\Схемы\Регулятор фена\fw\v001\messages.h
+	"main.h"
+
+1418583327 \\inori\data\prog\Схемы\Регулятор фена\fw\v001\1202_lib.h
+
+1418499773 \\inori\data\prog\Схемы\Регулятор фена\fw\v001\my-stdlib.h
+
+1401378445 source:\\inori\data\prog\Схемы\Регулятор фена\fw\v001\asm.s
+	<avr/io.h>
+	"defines.h"
+
+1418591024 source:\\inori\data\prog\Схемы\Регулятор фена\fw\v001\main.c
+	"main.h"
+
+1418500053 source:\\inori\data\prog\Схемы\Регулятор фена\fw\v001\my-stdlib.c
+	"main.h"
+
+1499943183 source:i:\prog\Схемы\Регулятор фена\fw\v001\1202_lib.c
+	"1202_lib.h"
+	"main.h"
+
+1552213916 i:\prog\Схемы\Регулятор фена\fw\v001\main.h
+	"defines.h"
+	<inttypes.h>
+	"interface.h"
+
+1499944863 i:\prog\Схемы\Регулятор фена\fw\v001\defines.h
+
+1552243679 i:\prog\Схемы\Регулятор фена\fw\v001\messages.h
+	<avr/pgmspace.h>
+
+1499881910 i:\prog\Схемы\Регулятор фена\fw\v001\1202_lib.h
+	"messages.h"
+
+1499041523 i:\prog\Схемы\Регулятор фена\fw\v001\my-stdlib.h
+	<inttypes.h>
+
+1497438635 source:i:\prog\Схемы\Регулятор фена\fw\v001\asm.s
+	<avr/io.h>
+	"defines.h"
+
+1552215177 source:i:\prog\Схемы\Регулятор фена\fw\v001\main.c
+	<avr/io.h>
+	<avr/interrupt.h>
+	<avr/pgmspace.h>
+	<avr/sleep.h>
+	<avr/eeprom.h>
+	<util/delay.h>
+	<stdbool.h>
+	"main.h"
+	"my-stdlib.h"
+	"messages.h"
+	"interface.h"
+	"1202_lib.h"
+
+1501623050 source:i:\prog\Схемы\Регулятор фена\fw\v001\my-stdlib.c
+	"my-stdlib.h"
+	"main.h"
+	"messages.h"
+
+1552233653 i:\prog\Схемы\Регулятор фена\fw\v001\interface.h
+	<stdbool.h>
+	"messages.h"
+
+1501623090 source:i:\prog\Схемы\Регулятор фена\fw\v001\interface.c
+	<stdbool.h>
+	"interface.h"
+	"my-stdlib.h"
+	"1202_lib.h"
+	"main.h"
+

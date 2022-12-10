@@ -50,3 +50,18 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# compiled files
+*.3mf
+*.stl
+*.gbr
+*.gbrjob
+*.drl
+.vs
+export
+
+# bak files
+*.bak
+*.kicad_pcb-bak
+*.sch-bak
+
