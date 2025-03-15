@@ -20,7 +20,6 @@ uint8_t graphicX = 0;
 // в два раза больше, полупериод 200мс
 #define blink200_MAX 12
 uint8_t blink200 = 0;
-bool mEditing = false;
 
 const tMenuItem const settingsItems[] PROGMEM = {
     { text: m_mMenuShutdown,    ptr: &GunShutdownMode,                  type: mtBoolean},
@@ -67,31 +66,6 @@ float power10(int8_t power) {
     return ret;
 }
 
-float incdecExp(float source, bool dec) {
-    bool minus = source < 0;
-    if (minus) {
-        source = -source;
-        dec = ! dec;
-    }
-    // first of all let's find the logarithm
-    int power;
-    float step = power10(39);
-    for (power = 39; power < -40; power--) {
-        if (step < source) break;
-        else step = step / 10;
-    }
-    if (dec) {
-        source -= step;
-    } else {
-        source += step;
-    }
-    if (minus) {
-        return -source;
-    } else {
-        return source;
-    }
-}
-
 uint8_t printExp(float f, tFontStyle style) {
     uint8_t printed = 0;
     if (((float_cast) f).parts.sign) lcdPrintChar('-', style); printed++;
@@ -127,87 +101,38 @@ void Interface(ibutton event) {
     mPointer *mStackCurrent = &mStack[mStackPointer]; // SRAM
     const tMenu* mCurrent = mStackCurrent->menu; // PROGMEM
     const uint8_t length = pgm_read_byte(&mCurrent->length);
-
-    // тут кастовать обязательно, иначе прибавляется индекс, не помноженый на размер структуры
-    const tMenuItem* menuitem = (tMenuItem*)pgm_read_ptr(&mCurrent->items) + mStackCurrent->index;
-    const void* ptr = pgm_read_ptr(&menuitem->ptr);
     switch(event) {
-        case ibutDown: {
-            if (mEditing) {
-                switch ((enum tMenuType) pgm_read_word(&menuitem->type)) {
-                    case mtUInteger: {
-                        (*(uint8_t*) ptr)++;
-                        break;
-                    }
-                    case mtFExponential: {
-                        *(float*) ptr = incdecExp(*(float*) ptr, false);
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-            } else {
-                if (length-1 > mStackCurrent->index) mStackCurrent->index++;
-            }
+        case ibutDown:
+            if (length-1 > mStackCurrent->index) mStackCurrent->index++;
             break;
-        }
-        case ibutUp: {
-            if (mEditing) {
-                switch ((enum tMenuType) pgm_read_word(&menuitem->type)) {
-                    case mtUInteger: {
-                        (*(uint8_t*) ptr)--;
-                        break;
-                    }
-                    case mtFExponential: {
-                        *(float*) ptr = incdecExp(*(float*) ptr, true);
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-            } else {
-                if (0 < mStackCurrent->index) mStackCurrent->index--;
-            }
+        case ibutUp:
+            if (0 < mStackCurrent->index) mStackCurrent->index--;
             break;
-        }
-        case ibutEsc: {
-            if (mEditing) {
-                mEditing = false;
-            } else if (0 == mStackPointer) {
+        case ibutEsc:;
+            if (0 == mStackPointer) {
                 // turn "screensaver" on
                 idleTime = 1;
             } else {
                 mStackPointer--;
             }
             break;
-        }
-        case ibutOk: {
+        case ibutOk:;
+            // тут кастовать обязательно, иначе прибавляется индекс, не помноженый на размер структуры
+            const tMenuItem* menuitem = (tMenuItem*)pgm_read_ptr(&mCurrent->items) + mStackCurrent->index;
+            const void* ptr = pgm_read_ptr(&menuitem->ptr);
             switch ((enum tMenuType) pgm_read_word(&menuitem->type)) {
-            case mtMenu: {
+            case mtMenu:;
                 mStackPointer++;
                 mStack[mStackPointer].index = 0;
                 mStack[mStackPointer].menu = ptr;
                 break;
-            }
-            case mtBoolean: {
+            case mtBoolean:;
                 *(bool*)ptr = ! *(bool*)ptr;
                 break;
-            }
-            case mtUInteger:
-            case mtFExponential: {
-                mEditing = true;
-                break;
-            }
-            default: {
-                break;
-            }
+            default:;
             }
             break;
-        }
-        default: {
-        }
+        default:;
     }
 }
 
@@ -300,11 +225,7 @@ void MenuScreen() {
             const void* ptr = pgm_read_ptr(&mCurrent[offset+row].ptr);
             const enum tMenuType type = pgm_read_word(&mCurrent[offset+row].type);
             tFontStyle style = (row+offset == index)? inversed: normal;
-
-            if ((row+offset == index) && mEditing) lcdPrintChar('>', style);
-            else lcdPrintChar(' ', style);
-
-            uint8_t printed = lcdPrint(pgm_read_ptr(&mCurrent[offset+row].text), style) + 1;
+            uint8_t printed = lcdPrint(pgm_read_ptr(&mCurrent[offset+row].text), style);
             // print additional values
             switch (type) {
             case mtBoolean:;

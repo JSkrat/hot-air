@@ -33,7 +33,6 @@ typedef struct {
 #define MSTACK_SIZE 8
 mPointer mStack[MSTACK_SIZE];
 int8_t mStackPointer;
-bool mEditing;
 
 typedef enum {
     ibutNone,

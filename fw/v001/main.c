@@ -26,12 +26,10 @@ uint8_t bDSolderTemp = 0;
 uint32_t gunheat_sum = 0, guntemp_sum = 0;
 uint8_t gunheat_cnt = 0, guntemp_cnt = 0;
 
-// set of linear approximations: linear power to time of opening the triac from the sin period start (50hz)
 const uint16_t x[] PROGMEM = {0,         8,         24,        50,        144,       879,       973,       999,       1015};
 const float k[]    PROGMEM = {-0.007043, -0.002594, -0.001692, -0.001094, -0.000693, -0.001089, -0.001669, -0.002507, -0.004984};
 const float b[]    PROGMEM = {1.0,       0.964409,  0.942767,  0.912873,  0.855141,  1.202471,  1.767431,  2.604264,  5.118694};
 
-// linear approximation: amplified voltage from thermocoupling — temperature or the heat gun
 uint16_t GunTemp(uint16_t thermocouple) {
     float t = (float) thermocouple;
     return 0.4175262*t + 50.27458766;
@@ -94,39 +92,37 @@ ISR(ADC_vect) {
     // 10.4kHz/13 = 800Hz per read
     switch (sADMUX) {
     case admGunTemp: // термопара в фене
-        // move pointer in circular buffer
         if (GunTemps_size <= ++GunTempI) GunTempI = 0;
         //GunTempSum -= GunTemps[GunTempI];
         uint16_t old = GunTemps[GunTempI];
         uint16_t cur = wadc;
         GunTemps[GunTempI] = cur;
-        // now GunTempsSort[GunTempI
         //GunTempSum += GunTemps[GunTempI];
 
         // keep the array of "pointers" to values in circular buffer sorted, it is easier than resort whole buffer each cycle
         // search for previous position of the current element
-        int i;
-        for (i = 0; i < GunTemps_size; i++) {
-            if (GunTempsSort[i] == GunTempI) break;
+        int GunTempSortI;
+        for (GunTempSortI = 0; GunTempSortI < GunTemps_size; GunTempSortI++) {
+            if (GunTempsSort[GunTempSortI] == GunTempI) break;
         }
         if (old < cur) {
             // move element up to highers
-            for (; i < GunTemps_size-1; i++) {
-                if (GunTemps[GunTempsSort[i+1]] < cur) {
-                    uint8_t up = GunTempsSort[i+1];
-                    GunTempsSort[i+1] = GunTempsSort[i];
-                    GunTempsSort[i] = up;
+            for (; GunTempSortI < GunTemps_size-1; GunTempSortI++) {
+                if (GunTemps[GunTempsSort[GunTempSortI+1]] < cur) {
+                    uint8_t up = GunTempsSort[GunTempSortI+1];
+                    GunTempsSort[GunTempSortI+1] = GunTempsSort[GunTempSortI];
+                    GunTempsSort[GunTempSortI] = up;
                 } else {
                     break;
                 }
             }
         } else if (old > cur) {
             // move element down to lowers
-            for (; i > 1; i--) {
-                if (GunTemps[GunTempsSort[i-1]] > cur) {
-                    uint8_t down = GunTempsSort[i-1];
-                    GunTempsSort[i-1] = GunTempsSort[i];
-                    GunTempsSort[i] = down;
+            for (; GunTempSortI > 1; GunTempSortI--) {
+                if (GunTemps[GunTempsSort[GunTempSortI-1]] > cur) {
+                    uint8_t down = GunTempsSort[GunTempSortI-1];
+                    GunTempsSort[GunTempSortI-1] = GunTempsSort[GunTempSortI];
+                    GunTempsSort[GunTempSortI] = down;
                 } else {
                     break;
                 }
@@ -136,12 +132,13 @@ ISR(ADC_vect) {
         }
         // the median filter itself)
         smoothGunTemp = GunTemps[GunTempsSort[GunTemps_size/2]];
-        /*guntemp_sum += GunTempSum / GunTemps_size;
-        if (++guntemp_cnt >= smooth_cnt) {
-            smoothGunTemp = guntemp_sum / smooth_cnt;
-            guntemp_sum = 0;
-            guntemp_cnt = 0;
-        }*/
+
+        //guntemp_sum += GunTempSum / GunTemps_size;
+        //if (++guntemp_cnt >= smooth_cnt) {
+        //    smoothGunTemp = guntemp_sum / smooth_cnt;
+        //    guntemp_sum = 0;
+        //    guntemp_cnt = 0;
+        //}
     break;
     case admSolderTemp: // термопара в паяльнике
         bDSolderTemp = adc;
@@ -214,7 +211,7 @@ ISR(INT0_vect) {
     } else {
         if (GunFeedbackMode) {
             // PID
-            uint16_t fact = smoothGunTemp; // GunTempSum / GunTemps_size;
+            uint16_t fact = smoothGunTemp;
             int16_t delta = VarGunHeat - fact;
             GHIntegral += IntegralK * (float) delta;
             if (PowerMax < GHIntegral) GHIntegral = PowerMax;
@@ -255,7 +252,7 @@ ISR(TIMER2_OVF_vect) {
         GunShutdownCoolTimeout = 0;
     } else {
         // shutdown sequence
-        if (TemperatureAmbient < (GunTempSum / GunTemps_size)) { // wait until thermocouple thinks that air has ambient temperature
+        if (TemperatureAmbient < (smoothGunTemp)) { // wait until thermocouple thinks that air has ambient temperature
             GunShutdownCoolTimeout = 0;
             OCR2A = 0xFF;
         } else { // when air has ambient temperature or lower run timeout
@@ -295,8 +292,8 @@ int main(void) {
     TC2A_CONTROL |= (0 << WGM21) | (1 << WGM20) | (1 << COM2A1) | (0 << COM2A0);
     TC2B_CONTROL |= (0 << CS22) | (0 << CS21) | (1 << CS20);
     // OC2 should be set as output
-    DDRB = (1 << poGunAir) | (1 << poLCD_PWR) | (1 << poLCD_CS) | (1 << poLCD_RST) | (1 << poDebugB6) | (1 << poDebugB7);
-    DDRD = (1 << poLCD_DATA) | (1 << poLCD_CLK) | (1 << poSolder) | (1 << poGunHeat) | (1 << poDebugD0) | (1 << poDebugD1) | (1 << poDebugD3);
+    DDRB = (1 << poLCD_PWR) | (1 << poGunHeat) | (1 << poGunAir) | (1 << poDebugB6) | (1 << poDebugB7);
+    DDRD = (0 << piPhaseDetector) | (0 << piGunIdle) | (1 << poLCD_RST) | (1 << poLCD_CS) | (1 << poLCD_DATA) | (1 << poLCD_CLK) | (1 << poDebugD0) | (1 << poDebugD1);
 
     // timer1 initialization (heat elements)
     // T1 normal operational mode (top 0xFFFF)
@@ -329,7 +326,7 @@ int main(void) {
     GunShutdownCoolTimeout = ShutdownCoolTimeout;
     // Init LCD
     // turn it on
-    portLCD |= (1 << poLCD_PWR);
+    portLCD_PWR |= (1 << poLCD_PWR);
     // release reset pin
     _delay_us(3); // 2500ns
     portLCD |= (1 << poLCD_RST);

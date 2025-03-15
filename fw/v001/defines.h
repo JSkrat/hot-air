@@ -11,19 +11,19 @@ main cycle — перерисовка экрана
 
 // периферия
 
-#define portOpto    PORTD
-#define poSolder    PORTD4
-#define poGunHeat   PORTD5
+#define portOpto    PORTB
+#define poSolder    PORTB1
+#define poGunHeat   PORTB2
 
 #define poDebugD0   PORTD0
 #define poDebugD1   PORTD1
-#define poDebugD3   PORTD3
 #define poDebugB6   PORTB6
 #define poDebugB7   PORTB7
 
 #define portPhaseDetector   PORTD
 #define ddrPhaseDetector    DDRD
 #define piPhaseDetector     PIND2
+#define piGunIdle           PIND3
 
 // аппаратный ногодрыг
 #define portGunAir  PORTB
@@ -46,10 +46,11 @@ main cycle — перерисовка экрана
 #define admFirst    admGunTemp
 #define admLast     admButtons
 
-#define portLCD     PORTB
+#define portLCD_PWR PORTB
 #define poLCD_PWR   PORTB0
-#define poLCD_RST   PORTB1
-#define poLCD_CS    PORTB2
+#define portLCD     PORTD
+#define poLCD_RST   PORTD4
+#define poLCD_CS    PORTD5
 
 #define portLCD_HI  PORTD
 #define poLCD_DATA  PORTD6

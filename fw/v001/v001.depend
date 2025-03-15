@@ -78,14 +78,14 @@
 	"1202_lib.h"
 	"main.h"
 
-1552213916 i:\prog\Схемы\Регулятор фена\fw\v001\main.h
+1690632792 i:\prog\Схемы\Регулятор фена\fw\v001\main.h
 	"defines.h"
 	<inttypes.h>
 	"interface.h"
 
-1499944863 i:\prog\Схемы\Регулятор фена\fw\v001\defines.h
+1667141061 i:\prog\Схемы\Регулятор фена\fw\v001\defines.h
 
-1552243679 i:\prog\Схемы\Регулятор фена\fw\v001\messages.h
+1690669185 i:\prog\Схемы\Регулятор фена\fw\v001\messages.h
 	<avr/pgmspace.h>
 
 1499881910 i:\prog\Схемы\Регулятор фена\fw\v001\1202_lib.h
@@ -98,7 +98,7 @@
 	<avr/io.h>
 	"defines.h"
 
-1552215177 source:i:\prog\Схемы\Регулятор фена\fw\v001\main.c
+1499944643 source:i:\prog\Схемы\Регулятор фена\fw\v001\main.c
 	<avr/io.h>
 	<avr/interrupt.h>
 	<avr/pgmspace.h>
@@ -117,7 +117,7 @@
 	"main.h"
 	"messages.h"
 
-1552233653 i:\prog\Схемы\Регулятор фена\fw\v001\interface.h
+1501620316 i:\prog\Схемы\Регулятор фена\fw\v001\interface.h
 	<stdbool.h>
 	"messages.h"
 
@@ -127,4 +127,58 @@
 	"my-stdlib.h"
 	"1202_lib.h"
 	"main.h"
+
+1499939583 source:c:\users\mintytail\documents\v001\1202_lib.c
+	"1202_lib.h"
+	"main.h"
+
+1499878310 c:\users\mintytail\documents\v001\1202_lib.h
+	"messages.h"
+
+1667137464 c:\users\mintytail\documents\v001\messages.h
+	<avr/pgmspace.h>
+
+1499941043 c:\users\mintytail\documents\v001\main.h
+	"defines.h"
+	<inttypes.h>
+	"interface.h"
+
+1667137461 c:\users\mintytail\documents\v001\defines.h
+
+1501616716 c:\users\mintytail\documents\v001\interface.h
+	<stdbool.h>
+	"messages.h"
+
+1497435035 source:c:\users\mintytail\documents\v001\asm.s
+	<avr/io.h>
+	"defines.h"
+
+1501619490 source:c:\users\mintytail\documents\v001\interface.c
+	<stdbool.h>
+	"interface.h"
+	"my-stdlib.h"
+	"1202_lib.h"
+	"main.h"
+
+1499037923 c:\users\mintytail\documents\v001\my-stdlib.h
+	<inttypes.h>
+
+1499944643 source:c:\users\mintytail\documents\v001\main.c
+	<avr/io.h>
+	<avr/interrupt.h>
+	<avr/pgmspace.h>
+	<avr/sleep.h>
+	<avr/eeprom.h>
+	<util/delay.h>
+	<stdbool.h>
+	"main.h"
+	"my-stdlib.h"
+	"messages.h"
+	"interface.h"
+	"1202_lib.h"
+
+1501619450 source:c:\users\mintytail\documents\v001\my-stdlib.c
+	"my-stdlib.h"
+	"main.h"
+	"messages.h"
 
